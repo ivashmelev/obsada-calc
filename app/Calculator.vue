@@ -17,15 +17,26 @@
             }
         },
 
+        beforeMount: function () {
+            if (this.$root.$el.dataset.options)
+                this.$root.options = JSON.parse(this.$root.$el.dataset.options);
+        },
+        mounted: function () {
+            if (this.$root.options.onInit && window[this.$root.options.onInit] && typeof window[this.$root.options.onInit] == 'function')
+                window[this.$root.options.onInit](this.$el);
+        },
+
         methods: {
             action: function () {
                 let request = new XMLHttpRequest();
-                request.open("POST", "https://httpbin.org/post", true);
+                //request.open("POST", "https://httpbin.org/post", true);
+                request.open("POST", "mail-calculation.php", true);
                 request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
                 request.send(JSON.stringify( this.$data ));
-                request.onreadystatechange = () => {//Call a function when the state changes.
+                request.onreadystatechange = () => {
                     if(request.readyState == 4 && request.status == 200) {
-                        alert("Ваша заявка принята\n" + JSON.stringify( this.$data ));
+                        if (this.$root.options.onOrder && window[this.$root.options.onOrder] && typeof window[this.$root.options.onOrder] == 'function')
+                            window[this.$root.options.onOrder](this.$el);
                     }
                 }
             }
@@ -34,128 +45,133 @@
 </script>
 
 <template>
-    <form @submit.prevent="action">
-        <div class="form-group">
-            <label> Ваше имя </label>
-            <input v-model="name" type="text" class="form-control">
+    <form class="calculation" @submit.prevent="action">
+        <div class="calculation__group form-group">
+            <label class="calculation__label"> Ваше имя </label>
+            <input v-model="name" type="text" class="calculation__input form-control">
         </div>
-        <div class="form-group">
-            <label>Адрес электронной почты</label>
-            <input v-model="email" type="email" class="form-control">
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Адрес электронной почты</label>
+            <input v-model="email" type="email" class="calculation__input form-control">
         </div>
-        <div class="form-group">
-            <label>Телефон</label>
-            <input v-model="phone" v-phone type="text" class="form-control">
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Телефон</label>
+            <input v-model="phone" v-phone type="text" class="calculation__input form-control">
         </div>
-        <div class="form-group">
-            <label>Размеры и количество окон в доме</label>
-            <div v-for="(w, i) in windows" class="row">
-                <div class="col-4">
-                    <div class="input-group mb-3">
-                        <input v-only-numbers type="text" v-model="w.height" class="form-control" placeholder="Высота">
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Размеры и количество окон в доме</label>
+            <div v-for="(w, i) in windows" class="calculation__row row">
+                <div class="calculation__col col-4">
+                    <div class="calculation__input-group input-group">
+                        <input v-only-numbers type="text" v-model="w.height" class="form-control calculation__input" placeholder="Высота">
                         <div class="input-group-append"><span class="input-group-text">см</span></div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="input-group mb-3">
-                        <input v-only-numbers type="text" v-model="w.width" class="form-control" placeholder="Ширина">
+                <div class="calculation__col col-4">
+                    <div class="calculation__input-group input-group">
+                        <input v-only-numbers type="text" v-model="w.width" class="form-control calculation__input" placeholder="Ширина">
                         <div class="input-group-append"><span class="input-group-text">см</span></div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div style="display: flex; align-items: flex-start">
-                        <div class="input-group mb-3">
-                            <input v-only-numbers type="text" v-model="w.num" class="form-control" placeholder="Количество">
+                <div class="calculation__col col-4">
+                    <div class="calculation__delete-row">
+                        <div class="calculation__input-group input-group">
+                            <input v-only-numbers type="text" v-model="w.num" class="form-control calculation__input" placeholder="Количество">
                             <div class="input-group-append"><span class="input-group-text">шт</span></div>
                         </div>
-                        <a v-show="i" @click.prevent="windows.splice(i, 1)" style="margin-left: 5px;" href="#" class="btn btn-danger">&times;</a>
+                        <div><button type="button" v-show="i" @click="windows.splice(i, 1)" class="calculation__delete-btn">&times;</button></div>
                     </div>
                 </div>
             </div>
-            <div class="text-right">
-                <a class="btn btn-success btn-sm" @click.prevent="windows.push({})" href="#">Добавить окна</a>
+            <div class="calculation__add-btn-wrapper text-right">
+                <button type="button" class="calculation__btn btn btn-success btn-sm" @click="windows.push({})">Добавить окна</button>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Размеры и количество дверей в доме</label>
-            <div v-for="(d, i) in doors" class="row">
-                <div class="col-4">
-                    <div class="input-group mb-3">
-                        <input v-only-numbers type="text" v-model="d.height" class="form-control" placeholder="Высота">
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Размеры и количество дверей в доме</label>
+            <div v-for="(d, i) in doors" class="calculation__row row">
+                <div class="calculation__col col-4">
+                    <div class="calculation__input-group input-group">
+                        <input v-only-numbers type="text" v-model="d.height" class="form-control calculation__input" placeholder="Высота">
                         <div class="input-group-append"><span class="input-group-text">см</span></div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="input-group mb-3">
-                        <input v-only-numbers type="text" v-model="d.width" class="form-control" placeholder="Ширина">
+                <div class="calculation__col col-4">
+                    <div class="calculation__input-group input-group">
+                        <input v-only-numbers type="text" v-model="d.width" class="form-control calculation__input" placeholder="Ширина">
                         <div class="input-group-append"><span class="input-group-text">см</span></div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div style="display: flex; align-items: flex-start">
-                        <div class="input-group mb-3">
-                            <input v-only-numbers type="text" v-model="d.num" class="form-control" placeholder="Количество">
+                <div class="calculation__col col-4">
+                    <div class="calculation__delete-row">
+                        <div class="calculation__input-group input-group">
+                            <input v-only-numbers type="text" v-model="d.num" class="form-control calculation__input" placeholder="Количество">
                             <div class="input-group-append"><span class="input-group-text">шт</span></div>
                         </div>
-                        <a v-show="i" @click.prevent="doors.splice(i, 1)" style="margin-left: 5px;" href="#" class="btn btn-danger">&times;</a>
+                        <div><button type="button" v-show="i" @click="doors.splice(i, 1)" class="calculation__delete-btn">&times;</button></div>
                     </div>
                 </div>
             </div>
-            <div class="text-right">
-                <a class="btn btn-success btn-sm" @click.prevent="doors.push({})" href="#">Добавить двери</a>
+            <div class="calculation__add-btn-wrapper text-right">
+                <button type="button" class="calculation__btn btn btn-success btn-sm" @click="doors.push({})">Добавить двери</button>
             </div>
         </div>
 
-        <div class="form-group">
-            <label> Материал стены вашего дома </label>
+        <div class="calculation__group form-group">
+            <label class="calculation__label"> Материал стены вашего дома </label>
             <div>
-                <div v-for="(v, k) in { prof_brus: 'профилированный брус', brevno: 'оцилиндрованное бревно', kley_brus: 'клееный брус', ruchnoe_brevno: 'бревно ручной рубки' }" class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input name="wall_material" v-model="wall_material" class="form-check-input" type="radio" :value="k">
-                        {{ v }}
-                    </label>
+                <div v-for="(v, k) in { prof_brus: 'профилированный брус', brevno: 'оцилиндрованное бревно', kley_brus: 'клееный брус', ruchnoe_brevno: 'бревно ручной рубки' }" class="calculation__radio form-check form-check-inline">
+                    <input :id="'check_' + k"  name="wall_material" v-model="wall_material" class="form-check-input" type="radio" :value="k">
+                    <label :for="'check_' + k" class="form-check-label"> {{ v }} </label>
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Толщина стены дома</label>
-            <div class="input-group mb-3">
-                <input v-only-numbers style="max-width: 100px;" type="text" v-model="wall_thickness" class="form-control">
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Толщина стены дома</label>
+            <div class="calculation__input-group input-group">
+                <input v-only-numbers style="max-width: 100px;" type="text" v-model="wall_thickness" class="form-control calculation__input">
                 <div class="input-group-append"><span class="input-group-text">см</span></div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Выполнить расчет</label>
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Выполнить расчет</label>
             <div>
-                <div v-for="(v, k) in { stoimost_obsad: 'стоимости обсад', podgotovka_proemov: 'подготовка проёмов', montazh_obsad: 'сборка и монтаж обсад', dostavka: 'доставка' }" class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input name="calculation_items" v-model="calculation_items" class="form-check-input" type="checkbox" :value="k">
-                        {{ v }}
-                    </label>
+                <div v-for="(v, k) in { stoimost_obsad: 'стоимости обсад', podgotovka_proemov: 'подготовка проёмов', montazh_obsad: 'сборка и монтаж обсад', dostavka: 'доставка' }" class="calculation__checkbox form-check form-check-inline">
+                    <input :id="'check_' + k"  name="calculation_items" v-model="calculation_items" class="form-check-input" type="checkbox" :value="k">
+                    <label :for="'check_' + k" class="form-check-label"> {{ v }} </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Толщина обсады</label>
+            <div>
+                <div v-for="(v, k) in { '45mm': '45 мм', '65mm': '65 мм', any: 'неважно' }" class="calculation__radio form-check form-check-inline">
+                    <input :id="'check_' + k"  name="casing_thickness" v-model="casing_thickness" class="form-check-input" type="radio" :value="k">
+                    <label :for="'check_' + k" class="form-check-label"> {{ v }} </label>
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <label>Толщина обсады</label>
-            <div>
-                <div v-for="(v, k) in { '45mm': '45 мм', '65mm': '65 мм', any: 'неважно' }" class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input name="casing_thickness" v-model="casing_thickness" class="form-check-input" type="radio" :value="k">
-                        {{ v }}
-                    </label>
-                </div>
-            </div>
+            <label class="calculation__label">Дополнительная информация</label>
+            <textarea class="form-control calculation__input" v-model="info"></textarea>
         </div>
 
-        <div class="form-group">
-            <label>Дополнительная информация</label>
-            <textarea class="form-control" v-model="info"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-lg btn-block btn-primary">Отправить</button>
+        <button type="submit" class="calculation__btn btn btn-lg btn-block btn-primary">Отправить</button>
     </form>
 </template>
+
+<style>
+    .calculation__delete-row {
+        display: flex;
+        align-items: center;
+    }
+
+    .calculation__delete-row > *:last-child {
+        flex: 1 0 auto;
+    }
+</style>

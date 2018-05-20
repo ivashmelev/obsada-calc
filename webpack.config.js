@@ -7,7 +7,7 @@ module.exports = {
         './app/main.js'
     ],
     output: {
-        filename: "obsada-calc.js"
+        filename: "calc.js"
     },
     watch: true,
     module: {

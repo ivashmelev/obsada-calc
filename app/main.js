@@ -9,5 +9,6 @@ Vue.directive('phone', Phone);
 
 new Vue({
     el: '#calculator',
+    data: { options: {} },
     render: h => h(Calculator)
 });
