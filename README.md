@@ -28,8 +28,8 @@ $ gulp webpack:dev
 ### Инициализация
 Базовый вариант
 ```html
-<script src="build/calc.js"></script>
 <div id="calculator"></div>
+<script src="build/calc.js"></script>
 ```
 Калькулятор может принимать параметры путем передачи элементу JSON строки через аттрибут data-options
 ```html
