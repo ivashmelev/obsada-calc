@@ -13,14 +13,15 @@
     "gulp": "^3.9.0",
     "gulp-watch": "^4.3.5",
     "html-loader": "^0.4.0",
+    "pug": "^2.0.3",
     "style-loader": "^0.13.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "vue-hot-reload-api": "^1.2.2",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^9.0.0",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.12.0",
-    "webpack-stream": "^2.3.0",
-    "uglifyjs-webpack-plugin": "^1.2.5"
+    "webpack-stream": "^2.3.0"
   },
   "dependencies": {
     "vue": "^2.5.16"

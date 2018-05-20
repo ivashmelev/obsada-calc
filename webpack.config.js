@@ -7,9 +7,7 @@ module.exports = {
         './app/main.js'
     ],
     output: {
-        //path: "/../public/backend/js",
-        //publicPath: "/../public",
-        filename: "calc.js"
+        filename: "obsada-calc.js"
     },
     watch: true,
     module: {
@@ -34,16 +32,25 @@ module.exports = {
     resolve: {
         modulesDirectories: ['node_modules'],
         alias: {
-            'vue$': 'vue/dist/vue.min.js',
+            'vue$': 'vue/dist/vue.common.js',
         }
     },
     plugins: [
-        new UglifyJsPlugin({}),
         new webpack.ProvidePlugin({
 
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"production"'
         })
     ]
+}
+
+
+if (process.env.NODE_ENV === 'production') {
+    module.exports.watch = false;
+    module.exports.plugins = (module.exports.plugins || []).concat([
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        }),
+        new UglifyJsPlugin()
+    ])
 }

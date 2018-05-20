@@ -1,11 +1,32 @@
 ## Форма расчета обсады
 
-### Генерация js-файла для использования на странице
+### Старт
 
-```
-cd obsada-calc
-npm i
-gulp
+Установка зависимостей:
+
+```sh
+$ npm install
 ```
 
-Нажать `ctrl+c`. Файл расположен по адресу `obsada-calc.js`.
+Сборка production-версии:
+
+```sh
+$ gulp webpack:prod
+```
+
+Сборка dev-версии. Включен watch-mode:
+
+```sh
+$ gulp
+```
+или
+```sh
+$ gulp webpack:dev
+```
+По итогу в папке build скомпилируется файл calc.js который требуется подключать на страницу.
+
+### Инициализация
+```html
+<script src="dist/calc.js"></script>
+<div id="calculator"></div>
+```
