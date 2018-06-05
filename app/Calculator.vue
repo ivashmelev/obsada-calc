@@ -4,9 +4,9 @@
         name: 'Calculator',
         data () {
             return {
-                name:               '',
-                email:              '',
-                phone:              '',
+                // name:               '',
+                // email:              '',
+                // phone:              '',
                 wall_material:      '',
                 wall_thickness:     '',
                 calculation_items:  [],
@@ -42,22 +42,23 @@
             }
         }
     }
+
 </script>
 
 <template>
     <form class="calculation" @submit.prevent="action">
-        <div class="calculation__group form-group">
-            <label class="calculation__label"> Ваше имя </label>
-            <input v-model="name" type="text" class="calculation__input form-control">
-        </div>
-        <div class="calculation__group form-group">
-            <label class="calculation__label">Адрес электронной почты</label>
-            <input v-model="email" type="email" class="calculation__input form-control">
-        </div>
-        <div class="calculation__group form-group">
-            <label class="calculation__label">Телефон</label>
-            <input v-model="phone" v-phone type="text" class="calculation__input form-control">
-        </div>
+        <!--<div class="calculation__group form-group">-->
+            <!--<label class="calculation__label"> Ваше имя </label>-->
+            <!--<input v-model="name" type="text" class="calculation__input form-control">-->
+        <!--</div>-->
+        <!--<div class="calculation__group form-group">-->
+            <!--<label class="calculation__label">Адрес электронной почты</label>-->
+            <!--<input v-model="email" type="email" class="calculation__input form-control">-->
+        <!--</div>-->
+        <!--<div class="calculation__group form-group">-->
+            <!--<label class="calculation__label">Телефон</label>-->
+            <!--<input v-model="phone" v-phone type="text" class="calculation__input form-control">-->
+        <!--</div>-->
         <div class="calculation__group form-group">
             <label class="calculation__label">Размеры и количество окон в доме</label>
             <div v-for="(w, i) in windows" class="calculation__row row">
