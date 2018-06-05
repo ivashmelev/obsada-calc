@@ -7,6 +7,7 @@
                 // name:               '',
                 // email:              '',
                 // phone:              '',
+                form_id:      Math.random().toString(36).substr(2, 9),
                 wall_material:      '',
                 wall_thickness:     '',
                 calculation_items:  [],
@@ -30,7 +31,7 @@
             action: function () {
                 let request = new XMLHttpRequest();
                 //request.open("POST", "https://httpbin.org/post", true);
-                request.open("POST", "mail-calculation.php", true);
+                request.open("POST", "/mail-calculation.php", true);
                 request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
                 request.send(JSON.stringify( this.$data ));
                 request.onreadystatechange = () => {
@@ -47,6 +48,7 @@
 
 <template>
     <form class="calculation" @submit.prevent="action">
+        <input v-model="form_id" class="uniq_form_id" type="hidden" />
         <!--<div class="calculation__group form-group">-->
             <!--<label class="calculation__label"> Ваше имя </label>-->
             <!--<input v-model="name" type="text" class="calculation__input form-control">-->
