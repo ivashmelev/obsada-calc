@@ -5,7 +5,7 @@
         data () {
             return {
                 // name:               '',
-                // email:              '',
+                email:              '',
                 // phone:              '',
                 form_id:      Math.random().toString(36).substr(2, 9),
                 wall_material:      '',
@@ -52,10 +52,6 @@
         <!--<div class="calculation__group form-group">-->
             <!--<label class="calculation__label"> Ваше имя </label>-->
             <!--<input v-model="name" type="text" class="calculation__input form-control">-->
-        <!--</div>-->
-        <!--<div class="calculation__group form-group">-->
-            <!--<label class="calculation__label">Адрес электронной почты</label>-->
-            <!--<input v-model="email" type="email" class="calculation__input form-control">-->
         <!--</div>-->
         <!--<div class="calculation__group form-group">-->
             <!--<label class="calculation__label">Телефон</label>-->
@@ -157,6 +153,11 @@
                     <label :for="'check_' + k" class="form-check-label"> {{ v }} </label>
                 </div>
             </div>
+        </div>
+
+        <div class="calculation__group form-group">
+            <label class="calculation__label">Электронная почта для получения результата</label>
+            <input v-model="email" type="email" class="calculation__input form-control" placeholder="необязательно">
         </div>
 
         <div class="form-group">
