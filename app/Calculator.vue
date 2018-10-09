@@ -148,7 +148,7 @@
         <div class="calculation__group form-group">
             <label class="calculation__label">Толщина обсады</label>
             <div>
-                <div v-for="(v, k) in { '45mm': '45 мм', '65mm': '65 мм', any: 'неважно' }" class="calculation__radio form-check form-check-inline">
+                <div v-for="(v, k) in { '40mm': '40 мм', '65mm': '65 мм', any: 'неважно' }" class="calculation__radio form-check form-check-inline">
                     <input :id="'check_' + k"  name="casing_thickness" v-model="casing_thickness" class="form-check-input" type="radio" :value="k">
                     <label :for="'check_' + k" class="form-check-label"> {{ v }} </label>
                 </div>
