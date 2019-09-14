@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div data-options='{"onOrder": "sendBitrix"}' id="calculator"></div>
+  <script>
+
+    const sendBitrix = async (el, portal) => {
+      const obj = {};
+      const inputs = [...el].filter(element => element.tagName === "INPUT" || element.tagName === "TEXTAREA" ? element : null);
+      let valueCheckbox = ''
+
+      inputs.forEach(input => {
+        if (input.type === 'radio' && input.checked === true) {
+          input.value === 'prof_brus' ? input.value = 'профилированный брус' :
+            input.value === 'brevno' ? input.value = 'оцилиндрованное бревно' :
+              input.value === 'kley_brus' ? input.value = 'клееный брус' :
+                input.value === 'ruchnoe_brevno' ? input.value = 'бревно ручной рубки' : null;
+
+          obj[input.name] = input.value;
+        }
+
+        if (input.type === 'checkbox' && input.checked === true) {
+          input.value === 'stoimost_obsad' ? input.value = 'стоимости обсад' :
+            input.value === 'podgotovka_proemov' ? input.value = 'подготовка проёмов' :
+              input.value === 'montazh_obsad' ? input.value = 'сборка и монтаж обсад' :
+                input.value === 'dostavka' ? input.value = 'доставка' : null;
+
+          valueCheckbox += input.value + ',';
+          obj[input.name] = valueCheckbox.split(',').slice(0, -1);
+        }
+
+        if (input.type === 'text' || input.type === 'email' || input.tagName === "TEXTAREA") {
+          obj[input.name] = input.value;
+        }
+      });
+
+      const response = await fetch(`https://${portal.domain}.bitrix24.ru/rest/1/${portal.token}/crm.lead.add.json`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fields: {
+            EMAIL: [{
+              VALUE: obj.email
+            }],
+            COMMENTS: `
+              Высота окна: ${obj.window_height} <br/>
+              Ширина окна: ${obj.window_width} <br/>
+              Количество окон: ${obj.window_num} <br/>
+              Высота двери: ${obj.door_height} <br/>
+              Ширина двери: ${obj.door_width} <br/>
+              Количество дверей: ${obj.door_num} <br/>
+              Материал стены: ${obj.wall_material} <br/>
+              Толщина стены: ${obj.wall_thickness} <br/>
+              Выполнить расчет: ${obj.calculation_items} <br/>
+              Толщина обсады: ${obj.casing_thickness} <br/>
+              Дополнительная информация: ${obj.info} <br/>
+            `
+          }
+        })
+      });
+    }
+
+    window.sendBitrix = sendBitrix;
+  </script>
+  <script src="build/calc.js"></script>
+</body>
+
+</html>

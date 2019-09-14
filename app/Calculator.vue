@@ -18,8 +18,8 @@ export default {
       windows: [{}],
       doors: [{}],
       portal: {
-        token: "--- YOUR TOKEN ---",
-        domain: "--- YOUR PORTAL ---"
+        token: "jv70x6ukbtluq1ma",
+        domain: "b24-7c9jwg"
       }
     };
   },
@@ -40,24 +40,24 @@ export default {
 
   methods: {
     action: function() {
-      let request = new XMLHttpRequest();
+      // let request = new XMLHttpRequest();
       //request.open("POST", "https://httpbin.org/post", true);
-      request.open("POST", "/mail-calculation.php", true);
-      request.setRequestHeader(
-        "Content-Type",
-        "application/json; charset=UTF-8"
-      );
-      request.send(JSON.stringify(this.$data));
-      request.onreadystatechange = () => {
-        if (request.readyState == 4 && request.status == 200) {
-          if (
-            this.$root.options.onOrder &&
-            window[this.$root.options.onOrder] &&
-            typeof window[this.$root.options.onOrder] == "function"
-          )
-            window[this.$root.options.onOrder](this.$el, this.portal); //Второй аргумент это авторизационные данные битрикс 24
-        }
-      };
+      // request.open("POST", "/mail-calculation.php", true);
+      // request.setRequestHeader(
+      //   "Content-Type",
+      //   "application/json; charset=UTF-8"
+      // );
+      // request.send(JSON.stringify(this.$data));
+      // request.onreadystatechange = () => {
+      //   if (request.readyState == 4 && request.status == 200) {
+      if (
+        this.$root.options.onOrder &&
+        window[this.$root.options.onOrder] &&
+        typeof window[this.$root.options.onOrder] == "function"
+      )
+        window[this.$root.options.onOrder](this.$el, this.portal); //Второй аргумент это авторизационные данные битрикс 24
+      // }
+      // };
     }
   }
 };
