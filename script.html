@@ -52,22 +52,23 @@
             EMAIL: [{
               VALUE: obj.email
             }],
-            COMMENTS: `
-              Высота окна: ${obj.window_height} <br/>
-              Ширина окна: ${obj.window_width} <br/>
-              Количество окон: ${obj.window_num} <br/>
-              Высота двери: ${obj.door_height} <br/>
-              Ширина двери: ${obj.door_width} <br/>
-              Количество дверей: ${obj.door_num} <br/>
-              Материал стены: ${obj.wall_material} <br/>
-              Толщина стены: ${obj.wall_thickness} <br/>
-              Выполнить расчет: ${obj.calculation_items} <br/>
-              Толщина обсады: ${obj.casing_thickness} <br/>
-              Дополнительная информация: ${obj.info} <br/>
-            `
+            COMMENTS: `Дополнительная информация: ${obj.info}`,
+            SOURCE_ID: 2,
+            UF_CRM_1568645931: [`Высота окна: ${obj.window_height}`,
+            `Ширина окна: ${obj.window_width}`,
+            `Количество окон: ${obj.window_num}`],
+            UF_CRM_1568646682: [`Высота двери: ${obj.door_height}`,
+            `Ширина двери: ${obj.door_width}`,
+            `Количество дверей: ${obj.door_num}`],
+            UF_CRM_1568647053: obj.wall_material,
+            UF_CRM_1568647067: obj.wall_thickness,
+            UF_CRM_1568647081: obj.calculation_items.join(','),
+            UF_CRM_1568647096: obj.casing_thickness,
           }
         })
       });
+
+      console.log(obj.calculation_items);
     }
 
     window.sendBitrix = sendBitrix;
